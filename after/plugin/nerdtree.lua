@@ -1,13 +1,14 @@
-vim.cmd [[
-  map <C-n> :NERDTreeToggle<CR>
-  
-  " Opens NERDTree automatically with no files specified
-  " autocmd StdinReadPre * let s:std_in=1
-  " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-  
-  " Closes vim if NERDTree is the only window left open
-  autocmd bufenter * if (winnr("$") ==1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
 
-  let NERDTreeShowHidden=1
-  let NERDTreeRespectWildIgnore=1
-]]
+-- Autocmd to close neovim if NERDTree is the only window left
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*",
+  callback = function()
+    if vim.fn.winnr("$") == 1 and vim.b.NERDTree and vim.b.NERDTree.isTabTree then
+      vim.cmd("q")
+    end
+  end
+})
+
+vim.g.NERDTreeShowHidden = 1
+vim.g.NERDTreeRespectWildIgnore = 1
