@@ -12,6 +12,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('pytest_runner').setup()
+require('runfile').setup()
 
 require('lazy').setup({
   'tpope/vim-fugitive',

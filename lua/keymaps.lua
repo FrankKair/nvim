@@ -64,6 +64,3 @@ vim.keymap.set('n', 'g*', 'g*zz', opts)
 
 -- Clear search highlight on Enter
 vim.keymap.set('n', '<CR>', ':nohlsearch<CR>', opts)
-
--- Run file
-vim.keymap.set('n', '<leader>p', ':lua require("runfile").run_file()<CR>', opts)

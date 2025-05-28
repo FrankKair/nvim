@@ -19,8 +19,22 @@ function M.run_file()
     vim.cmd('write')
     vim.cmd('!' .. cmd)
   else
-    vim.notify('Unsupported file type: ' .. ext .. '\nSee ~/.config/nvim/lua/runfile.lua', vim.log.levels.WARN)
+    vim.notify(
+      'Unsupported file type: ' .. ext .. '\nSee ~/.config/nvim/lua/runfile.lua',
+      vim.log.levels.WARN
+    )
   end
+end
+
+
+-- Defaults to <leader>p
+function M.setup()
+  vim.keymap.set(
+    'n',
+    '<leader>p',
+    ':lua require("runfile").run_file()<CR>',
+    { noremap = true, silent = true, desc = "Run current file" }
+  )
 end
 
 return M
