@@ -21,22 +21,22 @@ require('lazy').setup({
   'preservim/nerdtree',
   'akinsho/bufferline.nvim',
   { 'numToStr/Comment.nvim', opts = {} }, -- "gc" to comment regions/lines
-  { 'folke/which-key.nvim', opts = {} }, -- Shows pending keybinds
+  { 'folke/which-key.nvim',  opts = {} }, -- Shows pending keybinds
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      'williamboman/mason.nvim', -- Automatically installs LSPs to stdpath
+      'williamboman/mason.nvim',          -- Automatically installs LSPs to stdpath
       'williamboman/mason-lspconfig.nvim',
       { 'j-hui/fidget.nvim', opts = {} }, -- LSP status updates
-      'folke/neodev.nvim', -- Additional Lua configuration
+      'folke/neodev.nvim',                -- Additional Lua configuration
     },
   },
   {
-    'hrsh7th/nvim-cmp', -- Autocompletion
+    'hrsh7th/nvim-cmp',               -- Autocompletion
     dependencies = {
-      'L3MON4D3/LuaSnip', -- Snippet engine & its associated nvim-cmp source
+      'L3MON4D3/LuaSnip',             -- Snippet engine & its associated nvim-cmp source
       'saadparwaiz1/cmp_luasnip',
-      'hrsh7th/cmp-nvim-lsp', -- LSP completion capabilities
+      'hrsh7th/cmp-nvim-lsp',         -- LSP completion capabilities
       'hrsh7th/cmp-path',
       'rafamadriz/friendly-snippets', -- User-friendly snippets
     },
@@ -64,9 +64,7 @@ require('lazy').setup({
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make', -- requires local dependencies to be built
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
+        cond = function() return vim.fn.executable 'make' == 1 end,
       },
     },
   },

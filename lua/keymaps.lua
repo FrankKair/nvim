@@ -3,12 +3,11 @@ vim.g.maplocalleader = ' '
 
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
--- Remap for dealing with word wrap
+-- Word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- [[ Highlight on yank ]]
--- See `:help vim.highlight.on_yank()`
+-- Highlight on yank
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
@@ -18,8 +17,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
-local opts = { noremap = true, silent = true }
-
 -- Diagnostic keymaps
 vim.diagnostic.config({ virtual_text = false })
 local function toggle_virtual_text()
@@ -27,11 +24,13 @@ local function toggle_virtual_text()
   vim.diagnostic.config({ virtual_text = not current })
 end
 
-vim.keymap.set('n', '[d',vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 vim.keymap.set('n', '<leader>dt', toggle_virtual_text, { desc = 'Toggle diagnostic virtual text' })
+
+local opts = { noremap = true, silent = true }
 
 -- Window navigation
 vim.keymap.set('n', '<c-h>', '<c-w>h', opts)

@@ -1,6 +1,3 @@
--- [[ Configure Telescope ]]
--- See `:help telescope` and `:help telescope.setup()`
-
 local fb_actions = require('telescope').extensions.file_browser.actions
 
 require('telescope').setup {
@@ -44,7 +41,6 @@ require('telescope').setup {
 pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'file_browser')
 
--- See `:help telescope.builtin`
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = 'Search [F]iles' })
 vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = '[b] Find existing buffers' })
@@ -57,7 +53,6 @@ vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' }
 vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = '[?] Find recently opened files' })
 
 vim.keymap.set('n', '<leader>/', function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 10,
     previewer = false,
