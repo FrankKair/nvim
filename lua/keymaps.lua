@@ -30,6 +30,9 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 vim.keymap.set('n', '<leader>dt', toggle_virtual_text, { desc = 'Toggle diagnostic virtual text' })
 
+-- CMD+s write/save file
+vim.keymap.set("n", "<D-s>", ":w<CR>")
+
 local opts = { noremap = true, silent = true }
 
 -- Window navigation
