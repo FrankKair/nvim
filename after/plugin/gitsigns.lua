@@ -27,5 +27,19 @@ require('gitsigns').setup {
       require('gitsigns').preview_hunk,
       { buffer = bufnr, desc = '[P]review [H]unk' }
     )
+
+    vim.keymap.set(
+      'n',
+      '<leader>sh',
+      require('gitsigns').stage_hunk,
+      { buffer = bufnr, desc = '[S]tage [H]unk' }
+    )
+
+    vim.keymap.set(
+      'n',
+      '<leader>rh',
+      require('gitsigns').reset_hunk,
+      { buffer = bufnr, desc = '[R]eset [H]unk' }
+    )
   end,
 }
