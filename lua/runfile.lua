@@ -26,7 +26,6 @@ function M.run_file()
   end
 end
 
-
 -- Defaults to <leader>p
 function M.setup()
   vim.keymap.set(
