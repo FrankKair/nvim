@@ -9,37 +9,37 @@ require('gitsigns').setup {
   on_attach = function(bufnr)
     vim.keymap.set(
       'n',
-      '<leader>gp',
+      '<leader>hb',
       function() require('gitsigns').nav_hunk('prev') end,
-      { buffer = bufnr, desc = '[G]o to [P]revious Hunk' }
+      { buffer = bufnr, desc = '[H]unk [B]ack (previous)' }
     )
 
     vim.keymap.set(
       'n',
-      '<leader>gn',
+      '<leader>hn',
       function() require('gitsigns').nav_hunk('next') end,
-      { buffer = bufnr, desc = '[G]o to [N]ext Hunk' }
+      { buffer = bufnr, desc = '[H]unk [N]ext' }
     )
 
     vim.keymap.set(
       'n',
-      '<leader>ph',
+      '<leader>hp',
       require('gitsigns').preview_hunk,
-      { buffer = bufnr, desc = '[P]review [H]unk' }
+      { buffer = bufnr, desc = '[H]unk [P]review' }
     )
 
     vim.keymap.set(
       'n',
-      '<leader>sh',
+      '<leader>hs',
       require('gitsigns').stage_hunk,
-      { buffer = bufnr, desc = '[S]tage [H]unk' }
+      { buffer = bufnr, desc = '[H]unk [S]tage' }
     )
 
     vim.keymap.set(
       'n',
-      '<leader>rh',
+      '<leader>hr',
       require('gitsigns').reset_hunk,
-      { buffer = bufnr, desc = '[R]eset [H]unk' }
+      { buffer = bufnr, desc = '[H]unk [R]eset' }
     )
   end,
 }
