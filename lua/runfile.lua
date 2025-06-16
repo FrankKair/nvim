@@ -1,14 +1,14 @@
 local M = {}
 
 local runners = {
-  rs  = "rustc -o %< % && ./%< && rm %<",
-  ml  = "ocamlc -o %< % && ./%< && rm %< %<.cm*",
-  c   = "clang -o %< % && ./%< && rm %<",
-  py  = "python3 %",
-  rb  = "ruby %",
-  lua = "lua %",
-  ts  = "ts-node %",
-  sh  = "sh %"
+  rs  = 'rustc -o %< % && ./%< && rm %<',
+  ml  = 'ocamlc -o %< % && ./%< && rm %< %<.cm*',
+  c   = 'clang -o %< % && ./%< && rm %<',
+  py  = 'python3 %',
+  rb  = 'ruby %',
+  lua = 'lua %',
+  ts  = 'ts-node %',
+  sh  = 'sh %'
 }
 
 function M.run_file()
@@ -32,7 +32,7 @@ function M.setup()
     'n',
     '<leader>p',
     ':lua require("runfile").run_file()<CR>',
-    { noremap = true, silent = true, desc = "Run current file" }
+    { noremap = true, silent = true, desc = 'Run current file' }
   )
 end
 

@@ -1,5 +1,7 @@
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+
+---@diagnostic disable-next-line: undefined-field
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system {
     'git',
     'clone',
@@ -20,13 +22,13 @@ require('lazy').setup({
   'lewis6991/gitsigns.nvim',
   'preservim/nerdtree',
   'akinsho/bufferline.nvim',
-  { 'numToStr/Comment.nvim', opts = {} }, -- "gc" to comment regions/lines
+  { 'numToStr/Comment.nvim', opts = {} }, -- 'gc' to comment regions/lines
   { 'folke/which-key.nvim',  opts = {} }, -- Shows pending keybinds
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      'williamboman/mason.nvim',          -- Automatically installs LSPs to stdpath
-      'williamboman/mason-lspconfig.nvim',
+      'mason-org/mason.nvim',             -- Automatically installs LSPs to stdpath
+      'mason-org/mason-lspconfig.nvim',
       { 'j-hui/fidget.nvim', opts = {} }, -- LSP status updates
       'folke/neodev.nvim',                -- Additional Lua configuration
     },
@@ -58,7 +60,6 @@ require('lazy').setup({
   },
   {
     'nvim-telescope/telescope.nvim',
-    branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
       {
@@ -69,8 +70,8 @@ require('lazy').setup({
     },
   },
   {
-    "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+    'nvim-telescope/telescope-file-browser.nvim',
+    dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' }
   },
   {
     'nvim-treesitter/nvim-treesitter',
