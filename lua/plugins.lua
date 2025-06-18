@@ -13,8 +13,9 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('pytest_runner').setup()
 require('runfile').setup()
+require('pytest-runner').setup()
+
 require('lazy').setup({
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',

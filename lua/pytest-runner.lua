@@ -21,7 +21,7 @@ local function run_in_terminal(command)
   -- Look for an existing terminal buffer if we don't have one yet
   if term_buf == nil then
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "terminal" then
+      if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == 'terminal' then
         term_buf = buf
         break
       end
@@ -42,7 +42,7 @@ local function run_in_terminal(command)
     -- Terminal exists but isn't visible, make it visible
     if not is_visible then
       -- Create a split and set the buffer
-      vim.cmd("vsplit")
+      vim.cmd('vsplit')
       -- Make sure the buffer is still valid before setting it
       if vim.api.nvim_buf_is_valid(term_buf) then
         vim.api.nvim_win_set_buf(0, term_buf)
@@ -50,7 +50,7 @@ local function run_in_terminal(command)
       else
         -- Buffer is no longer valid, create a new terminal
         term_buf = nil
-        vim.cmd("terminal")
+        vim.cmd('terminal')
         term_buf = vim.api.nvim_get_current_buf()
         term_win = vim.api.nvim_get_current_win()
       end
@@ -60,7 +60,7 @@ local function run_in_terminal(command)
         vim.api.nvim_set_current_win(term_win)
       else
         -- Window is no longer valid, create a new terminal
-        vim.cmd("vsplit | terminal")
+        vim.cmd('vsplit | terminal')
         term_buf = vim.api.nvim_get_current_buf()
         term_win = vim.api.nvim_get_current_win()
       end
@@ -69,35 +69,35 @@ local function run_in_terminal(command)
     -- Send command to terminal
     local job_id = vim.b[term_buf].terminal_job_id
     if job_id then
-      vim.cmd("startinsert")
+      vim.cmd('startinsert')
       vim.opt_local.scrollback = 100000
-      vim.api.nvim_chan_send(job_id, command .. "\n")
+      vim.api.nvim_chan_send(job_id, command .. '\n')
 
       -- Return to original window after a short delay
       vim.defer_fn(function()
         if vim.api.nvim_win_is_valid(original_win) then
           vim.api.nvim_set_current_win(original_win)
           -- Force normal mode when returning to editor
-          vim.cmd("stopinsert")
+          vim.cmd('stopinsert')
         end
       end, 100)
     else
       -- Terminal job has died, create a new one in the same buffer
-      vim.cmd(string.format("buffer %d | %s", term_buf, "terminal"))
-      vim.cmd("startinsert")
+      vim.cmd(string.format('buffer %d | %s', term_buf, 'terminal'))
+      vim.cmd('startinsert')
 
       -- Give terminal time to initialize then send command
       vim.defer_fn(function()
         local job_id = vim.b[term_buf].terminal_job_id
         if job_id then
-          vim.api.nvim_chan_send(job_id, command .. "\n")
+          vim.api.nvim_chan_send(job_id, command .. '\n')
 
           -- Return to original window after a short delay
           vim.defer_fn(function()
             if vim.api.nvim_win_is_valid(original_win) then
               vim.api.nvim_set_current_win(original_win)
               -- Force normal mode when returning to editor
-              vim.cmd("stopinsert")
+              vim.cmd('stopinsert')
             end
           end, 100)
         end
@@ -105,7 +105,7 @@ local function run_in_terminal(command)
     end
   else
     -- No terminal exists yet, create one
-    vim.cmd("vsplit | terminal")
+    vim.cmd('vsplit | terminal')
     term_buf = vim.api.nvim_get_current_buf()
     term_win = vim.api.nvim_get_current_win()
 
@@ -116,15 +116,15 @@ local function run_in_terminal(command)
     vim.defer_fn(function()
       local job_id = vim.b[term_buf].terminal_job_id
       if job_id then
-        vim.cmd("startinsert")
-        vim.api.nvim_chan_send(job_id, command .. "\n")
+        vim.cmd('startinsert')
+        vim.api.nvim_chan_send(job_id, command .. '\n')
 
         -- Return to original window after a short delay
         vim.defer_fn(function()
           if vim.api.nvim_win_is_valid(original_win) then
             vim.api.nvim_set_current_win(original_win)
             -- Force normal mode when returning to editor
-            vim.cmd("stopinsert")
+            vim.cmd('stopinsert')
           end
         end, 100)
       end
@@ -138,15 +138,15 @@ local function is_in_test_file()
 end
 
 local function setup_terminal_options()
-  local group = vim.api.nvim_create_augroup("PytestTerminalOptions", { clear = true })
+  local group = vim.api.nvim_create_augroup('PytestTerminalOptions', { clear = true })
 
-  vim.api.nvim_create_autocmd("TermOpen", {
+  vim.api.nvim_create_autocmd('TermOpen', {
     group = group,
     callback = function()
       vim.opt_local.number = false
       vim.opt_local.relativenumber = false
       vim.opt_local.scrollback = 100000
-      vim.opt_local.bufhidden = "hide"
+      vim.opt_local.bufhidden = 'hide'
     end
   })
 end
@@ -158,9 +158,9 @@ function M.run_test_function()
     return
   end
 
-  local parser = vim.treesitter.get_parser(0, "python")
+  local parser = vim.treesitter.get_parser(0, 'python')
   if not parser then
-    vim.notify("Python treesitter parser not available", vim.log.levels.ERROR)
+    vim.notify('Python treesitter parser not available', vim.log.levels.ERROR)
     return
   end
 
@@ -171,12 +171,12 @@ function M.run_test_function()
 
   local function_node = nil
   local function find_function_at_cursor(node)
-    if node:type() == "function_definition" then
+    if node:type() == 'function_definition' then
       local start_row, start_col, end_row, end_col = node:range()
       if cursor_row >= start_row and cursor_row <= end_row then
-        -- Check if any child is an "identifier" to get the function name
+        -- Check if any child is an 'identifier' to get the function name
         for child in node:iter_children() do
-          if child:type() == "identifier" then
+          if child:type() == 'identifier' then
             function_node = node
             return true
           end
@@ -196,32 +196,32 @@ function M.run_test_function()
   find_function_at_cursor(root)
 
   if not function_node then
-    vim.notify("No test function found at cursor position", vim.log.levels.WARN)
+    vim.notify('No test function found at cursor position', vim.log.levels.WARN)
     return
   end
 
   local function_name = nil
   for child in function_node:iter_children() do
-    if child:type() == "identifier" then
+    if child:type() == 'identifier' then
       function_name = vim.treesitter.get_node_text(child, 0)
       break
     end
   end
 
-  if not function_name or not string.match(function_name, "^test_") then
+  if not function_name or not string.match(function_name, '^test_') then
     vim.notify("Not inside a test function (should start with 'test_')", vim.log.levels.WARN)
     return
   end
 
   local cmd = string.format("uv run python -m pytest -s %s::%s -vv", bufname, function_name)
-  vim.notify("Running: " .. cmd, vim.log.levels.INFO)
+  vim.notify('Running: ' .. cmd, vim.log.levels.INFO)
   run_in_terminal(cmd)
 end
 
 function M.run_test_module()
   local bufname = vim.fn.expand("%:p")
   if not is_in_test_file() then
-    vim.notify("Not in a test file", vim.log.levels.WARN)
+    vim.notify('Not in a test file', vim.log.levels.WARN)
     return
   end
 
@@ -233,66 +233,64 @@ end
 function M.run_test_path()
   local current_dir = vim.fn.expand("%:p:h")
   local cmd = string.format("uv run python -m pytest -s %s -vv", current_dir)
-  vim.notify("Running all tests in path: " .. current_dir, vim.log.levels.INFO)
+  vim.notify('Running all tests in path: ' .. current_dir, vim.log.levels.INFO)
   run_in_terminal(cmd)
 end
 
 function M.run_all_tests()
   local tests_dir = vim.fn.finddir("tests", ".;")
-  if tests_dir == "" then
-    tests_dir = vim.fn.finddir("test", ".;")
+  if tests_dir == '' then
+    tests_dir = vim.fn.finddir('test', '.;')
   end
 
-  if tests_dir == "" then
-    tests_dir = "."
+  if tests_dir == '' then
+    tests_dir = '.'
   end
 
   tests_dir = vim.fn.fnamemodify(tests_dir, ":p")
   local cmd = string.format("uv run python -m pytest -s %s -vv", tests_dir)
-  vim.notify("Running all tests in: " .. tests_dir, vim.log.levels.INFO)
+  vim.notify('Running all tests in: ' .. tests_dir, vim.log.levels.INFO)
   run_in_terminal(cmd)
 end
 
--- Set up keybindings
 function M.setup(opts)
   opts = opts or {}
 
   local keymaps = opts.keymaps or {
-    test_function = "<leader>tf",
-    test_module = "<leader>tm",
-    test_path = "<leader>tp",
-    test_all = "<leader>ta"
+    test_function = '<leader>tf',
+    test_module = '<leader>tm',
+    test_path = '<leader>tp',
+    test_all = '<leader>ta'
   }
 
   setup_terminal_options()
 
-  -- Create keymaps
-  vim.api.nvim_set_keymap(
-    "n",
+  vim.keymap.set(
+    'n',
     keymaps.test_function,
-    [[<cmd>lua require('pytest_runner').run_test_function()<CR>]],
-    { noremap = true, silent = true, desc = "Run test function under cursor" }
+    function() require('pytest-runner').run_test_function() end,
+    { noremap = true, silent = true, desc = 'Run test [f]unction under cursor' }
   )
 
-  vim.api.nvim_set_keymap(
-    "n",
+  vim.keymap.set(
+    'n',
     keymaps.test_module,
-    [[<cmd>lua require('pytest_runner').run_test_module()<CR>]],
-    { noremap = true, silent = true, desc = "Run all tests in current module" }
+    function() require('pytest-runner').run_test_module() end,
+    { noremap = true, silent = true, desc = 'Run all tests in current [m]odule' }
   )
 
-  vim.api.nvim_set_keymap(
-    "n",
+  vim.keymap.set(
+    'n',
     keymaps.test_path,
-    [[<cmd>lua require('pytest_runner').run_test_path()<CR>]],
-    { noremap = true, silent = true, desc = "Run all tests in current path" }
+    function() require('pytest-runner').run_test_path() end,
+    { noremap = true, silent = true, desc = 'Run all tests in current [p]ath' }
   )
 
-  vim.api.nvim_set_keymap(
-    "n",
+  vim.keymap.set(
+    'n',
     keymaps.test_all,
-    [[<cmd>lua require('pytest_runner').run_all_tests()<CR>]],
-    { noremap = true, silent = true, desc = "Run all tests" }
+    function() require('pytest-runner').run_all_tests() end,
+    { noremap = true, silent = true, desc = 'Run [a]ll tests' }
   )
 end
 
