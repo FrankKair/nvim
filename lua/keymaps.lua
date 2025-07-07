@@ -34,6 +34,10 @@ local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<D-s>', ':w<CR>', opts)
 vim.keymap.set('i', '<D-s>', '<Esc>:w<CR>', opts)
 
+-- macOS: CMD+backspace / option+backspace
+vim.keymap.set('i', '<Esc>[DEL-LINE', '<C-u>', opts)
+vim.keymap.set('i', '<M-BS>', '<C-w>', opts)
+
 -- Window navigation
 vim.keymap.set('n', '<c-h>', '<c-w>h', opts)
 vim.keymap.set('n', '<c-j>', '<c-w>j', opts)
