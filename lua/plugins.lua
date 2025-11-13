@@ -56,11 +56,11 @@ require('lazy').setup({
       },
     },
   },
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    main = 'ibl',
-    opts = {},
-  },
+  -- {
+  --   'lukas-reineke/indent-blankline.nvim',
+  --   main = 'ibl',
+  --   opts = {},
+  -- },
   {
     'nvim-telescope/telescope.nvim',
     dependencies = {
