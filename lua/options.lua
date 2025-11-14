@@ -17,3 +17,4 @@ vim.o.termguicolors = true             -- make sure the terminal supports this
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.scrolloff = 5
+vim.o.winborder = 'rounded'
