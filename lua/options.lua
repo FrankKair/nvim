@@ -1,5 +1,4 @@
 vim.o.wildignore = vim.o.wildignore .. '*.pyc,*.o,*.swp,*.DS_Store'
-vim.wo.number = true
 vim.o.mouse = 'a'
 vim.o.guicursor = 'n-v-c-sm:block'
 vim.o.clipboard = 'unnamedplus' -- sync clipboard between OS and nvim

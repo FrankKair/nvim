@@ -24,9 +24,14 @@ local function toggle_virtual_text()
   vim.diagnostic.config({ virtual_text = not current })
 end
 
+local function toggle_line_numbers()
+  vim.wo.number = not vim.wo.number
+end
+
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 vim.keymap.set('n', '<leader>dt', toggle_virtual_text, { desc = 'Toggle diagnostic virtual text' })
+vim.keymap.set('n', '<leader>ln', toggle_line_numbers, { desc = 'Toggle line numbers' })
 
 local opts = { noremap = true, silent = true }
 
