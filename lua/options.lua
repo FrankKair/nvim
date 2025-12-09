@@ -1,4 +1,5 @@
 vim.o.wildignore = vim.o.wildignore .. '*.pyc,*.o,*.swp,*.DS_Store'
+vim.wo.number = true
 vim.o.mouse = 'a'
 vim.o.guicursor = 'n-v-c-sm:block'
 vim.o.clipboard = 'unnamedplus' -- sync clipboard between OS and nvim
@@ -15,5 +16,5 @@ vim.o.completeopt = 'menuone,noselect' -- better completion experience
 vim.o.termguicolors = true             -- make sure the terminal supports this
 vim.o.splitright = true
 vim.o.splitbelow = true
-vim.o.scrolloff = 5
+vim.o.scrolloff = 15
 vim.o.winborder = 'rounded'
