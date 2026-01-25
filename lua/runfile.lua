@@ -1,9 +1,10 @@
 local M = {}
 
 local runners = {
+  c   = 'clang -Wall -Wextra -o %< % && ./%< && rm %<',
   rs  = 'rustc -o %< % && ./%< && rm %<',
   ml  = 'ocamlc -o %< % && ./%< && rm %< %<.cm*',
-  c   = 'clang -o %< % && ./%< && rm %<',
+  go  = 'go run %',
   py  = 'python %',
   rb  = 'ruby %',
   lua = 'lua %',
