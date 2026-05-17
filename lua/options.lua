@@ -3,7 +3,7 @@ local opt = vim.opt
 opt.wildignore:append({ '*.pyc', '*.o', '*.swp', '*.DS_Store' })
 opt.number = true
 opt.mouse = 'a'
-opt.guicursor = 'n-v-c-sm:block'
+opt.guicursor = 'n-v-c-sm:block-blinkon100-blinkoff100'
 opt.clipboard = 'unnamedplus' -- sync clipboard between OS and nvim
 opt.breakindent = true        -- enable break indent
 opt.undofile = true           -- save undo history
@@ -20,3 +20,22 @@ opt.splitright = true
 opt.splitbelow = true
 opt.scrolloff = 15
 opt.winborder = 'rounded'
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'c', 'cpp', 'go' },
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.expandtab = true
+  end,
+})
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'lua' },
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.expandtab = true
+  end,
+})
