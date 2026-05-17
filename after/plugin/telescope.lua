@@ -52,6 +52,10 @@ vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iag
 vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
 vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = '[?] Find recently opened files' })
 
+vim.keymap.set('n', '<leader>sR', function()
+  require('telescope.builtin').lsp_references({ include_declaration = false })
+end, { desc = '[S]earch [R]eferences (LSP)' })
+
 vim.keymap.set('n', '<leader>/', function()
   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 10,
