@@ -21,21 +21,17 @@ opt.splitbelow = true
 opt.scrolloff = 15
 opt.winborder = 'rounded'
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'c', 'cpp', 'go' },
-  callback = function()
-    vim.opt_local.tabstop = 4
-    vim.opt_local.shiftwidth = 4
-    vim.opt_local.softtabstop = 4
-    vim.opt_local.expandtab = true
-  end,
-})
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'lua' },
-  callback = function()
-    vim.opt_local.tabstop = 2
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.softtabstop = 2
-    vim.opt_local.expandtab = true
-  end,
-})
+local function set_indent_for(level, languages)
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = languages,
+    callback = function()
+      vim.opt_local.tabstop = level
+      vim.opt_local.shiftwidth = level
+      vim.opt_local.softtabstop = level
+      vim.opt_local.expandtab = true
+    end,
+  })
+end
+
+set_indent_for(4, { 'c', 'cpp', 'go' })
+set_indent_for(2, { 'lua' })
