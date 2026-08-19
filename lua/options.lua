@@ -34,4 +34,4 @@ local function set_indent_for(level, languages)
 end
 
 set_indent_for(4, { 'c', 'cpp', 'go' })
-set_indent_for(2, { 'lua' })
+set_indent_for(2, { 'lua', 'perl' })

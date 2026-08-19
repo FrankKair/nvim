@@ -8,6 +8,7 @@ local RUNNERS = {
   py  = 'python %',
   rb  = 'ruby %',
   lua = 'lua %',
+  pl  = 'perl %',
   ts  = 'ts-node %',
   sh  = 'sh %'
 }
