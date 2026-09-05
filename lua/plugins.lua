@@ -14,16 +14,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('runfile').setup()
-require('pytest-runner').setup()
 require('translate').setup()
 require('leetcode').setup()
 
 require('lazy').setup({
   'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'lewis6991/gitsigns.nvim',
-  'preservim/nerdtree',
   'akinsho/bufferline.nvim',
   { 'numToStr/Comment.nvim', opts = {} }, -- 'gc' to comment regions/lines
   { 'folke/which-key.nvim',  opts = {} }, -- Shows pending keybinds
@@ -33,7 +30,7 @@ require('lazy').setup({
       'mason-org/mason.nvim',             -- Automatically installs LSPs to stdpath
       'mason-org/mason-lspconfig.nvim',
       { 'j-hui/fidget.nvim', opts = {} }, -- LSP status updates
-      'folke/neodev.nvim',                -- Additional Lua configuration
+      { 'folke/lazydev.nvim', ft = 'lua', opts = {} },
     },
   },
   {
@@ -56,11 +53,6 @@ require('lazy').setup({
       },
     },
   },
-  -- {
-  --   'lukas-reineke/indent-blankline.nvim',
-  --   main = 'ibl',
-  --   opts = {},
-  -- },
   {
     'nvim-telescope/telescope.nvim',
     dependencies = {

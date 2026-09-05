@@ -41,7 +41,7 @@ local on_attach = function(_, bufnr)
   )
 end
 
-require('which-key').setup({
+require('which-key').add({
   { '<leader>c',  group = '[C]ode' },
   { '<leader>c_', hidden = true },
   { '<leader>d',  group = '[D]ocument' },
@@ -58,32 +58,15 @@ require('which-key').setup({
   { '<leader>t_', hidden = true },
   { '<leader>w',  group = '[W]orkspace' },
   { '<leader>w_', hidden = true },
-})
-require('which-key').setup({
-  { '<leader>',  group = 'VISUAL <leader>', mode = 'v' },
-  { '<leader>h', desc = 'Git [H]unk',       mode = 'v' },
+  { '<leader>',   group = 'VISUAL <leader>', mode = 'v' },
+  { '<leader>h',  desc = 'Git [H]unk',       mode = 'v' },
 })
 
-local servers = {
-  lua_ls = {
-    Lua = {
-      diagnostics = {
-        globals = { 'vim' },
-      },
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-    },
-  },
-}
-
-require('neodev').setup()
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 capabilities.offsetEncoding = { 'utf-8' }
 require('mason').setup()
-require('mason-lspconfig').setup()
-local mason_lspconfig = require('mason-lspconfig')
-mason_lspconfig.setup { ensure_installed = vim.tbl_keys(servers) }
+require('mason-lspconfig').setup { ensure_installed = { 'lua_ls' } }
 
 vim.lsp.config('*', {
   capabilities = capabilities,
