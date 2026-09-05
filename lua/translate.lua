@@ -4,15 +4,16 @@ local function strip_ansi_codes(s)
   return s:gsub('\27%[[0-9;]*m', '')
 end
 
-local function lookup_definition(word)
-  local handle = io.popen('trans -d "' .. word .. '"')
-  if handle then
-    local result = handle:read('*a')
-    handle:close()
-    return strip_ansi_codes(result)
-  else
-    return 'Failed to open process'
-  end
+local function lookup_definition(word, callback)
+  vim.system(
+    { 'trans', '-d', word },
+    { text = true },
+    function(result)
+      vim.schedule(function()
+        callback(strip_ansi_codes(result.stdout or ''))
+      end)
+    end
+  )
 end
 
 local function display_text_in_floating_window(text)
@@ -40,12 +41,14 @@ function M.define_word()
     vim.notify('No word selected or under cursor', vim.log.levels.WARN)
     return
   end
-  local definition = lookup_definition(word)
-  if definition and #definition > 0 then
-    display_text_in_floating_window(definition)
-  else
-    vim.notify('No definition found', vim.log.levels.INFO)
-  end
+  vim.notify('Looking up: ' .. word, vim.log.levels.INFO)
+  lookup_definition(word, function(definition)
+    if definition and #definition > 0 then
+      display_text_in_floating_window(definition)
+    else
+      vim.notify('No definition found', vim.log.levels.INFO)
+    end
+  end)
 end
 
 function M.setup()
