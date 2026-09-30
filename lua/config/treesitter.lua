@@ -59,3 +59,16 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
+
+-- The pinned master branch expects a single node here; Neovim 0.12 passes a
+-- list of nodes for each capture. Keep fenced Markdown injections working.
+if vim.fn.has('nvim-0.12') == 1 then
+  local aliases = { ex = 'elixir', pl = 'perl', sh = 'bash', uxn = 'uxntal', ts = 'typescript' }
+  vim.treesitter.query.add_directive('set-lang-from-info-string!', function(match, _, bufnr, pred, metadata)
+    local nodes = match[pred[2]]
+    local node = type(nodes) == 'table' and nodes[1] or nodes
+    if not node then return end
+    local alias = vim.treesitter.get_node_text(node, bufnr):lower()
+    metadata['injection.language'] = vim.filetype.match({ filename = 'a.' .. alias }) or aliases[alias] or alias
+  end, { force = true })
+end

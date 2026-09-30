@@ -56,7 +56,7 @@ map('n', 'vs', ':vs<CR>', opts)
 map('n', 'sp', ':sp<CR>', opts)
 -- Buffers
 map('n', '<leader><leader>', '<c-^>', opts)
-map('n', '<leader>w', ':bp <BAR> bd # <CR>', opts)
+map('n', '<leader>w', ':bp <BAR> bd # <CR>', { silent = true, desc = 'Close current buffer' })
 -- Path (print & copy)
 map('n', '<leader>pp', ":echo expand('%')<CR>", opts)
 map('n', '<leader>cp', ":call system('pbcopy', expand('%'))<CR>", opts)

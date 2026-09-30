@@ -7,18 +7,16 @@ local function open_leetcode_slug()
     return
   end
 
+  if not word:match('^[%w%-]+$') then
+    vim.notify('Invalid LeetCode slug: ' .. word, vim.log.levels.WARN)
+    return
+  end
+
   local url = 'https://leetcode.com/problems/' .. word .. '/'
   vim.notify('Opening: ' .. url, vim.log.levels.INFO)
 
-  local opener = vim.fn.has('macunix') == 1 and 'open'
-      or vim.fn.has('unix') == 1 and 'xdg-open'
-      or nil
-
-  if opener then
-    os.execute(string.format("%s '%s' &", opener, url))
-  else
-    vim.notify('No supported URL opener (xdg-open or open)', vim.log.levels.ERROR)
-  end
+  local ok, err = vim.ui.open(url)
+  if not ok then vim.notify('Could not open URL: ' .. tostring(err), vim.log.levels.ERROR) end
 end
 
 function M.setup()
