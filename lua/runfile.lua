@@ -1,12 +1,18 @@
 local M = {}
 
 local interpreters = {
-  go = { 'go', 'run' }, py = { 'python' }, rb = { 'ruby' },
-  lua = { 'lua' }, pl = { 'perl' }, ts = { 'ts-node' }, sh = { 'sh' },
+  go = { 'go', 'run' },
+  py = { 'python' },
+  rb = { 'ruby' },
+  lua = { 'lua' },
+  pl = { 'perl' },
+  ts = { 'ts-node' },
+  sh = { 'sh' },
 }
 local compilers = {
-  c = { 'clang', '-Wall', '-Wextra', '-Wpedantic', '-o' },
-  rs = { 'rustc', '-o' }, ml = { 'ocamlc', '-o' },
+  c = { argv = { 'clang', '-Wall', '-Wextra', '-Wpedantic', '-o' } },
+  rs = { argv = { 'rustc', '-o' } },
+  ml = { argv = { 'ocamlc', '-o' }, artifacts = { '.cmo', '.cmi' } },
 }
 local run_id = 0
 
@@ -67,20 +73,20 @@ end
 
 local function start(source, ext, buf)
   local cwd = vim.fs.dirname(source)
+  local compiler = compilers[ext]
   local id = run_id + 1
   run_id = id
   if buf then show(buf, { 'Running ' .. source .. ' ...' }) end
 
-  local tempdir, local_source
+  local tempdir
   local function finish(phase, result)
-    if local_source then
-      for _, stream in ipairs({ 'stdout', 'stderr' }) do
-        if result[stream] then
-          result[stream] = result[stream]:gsub(vim.pesc(local_source), function() return source end)
-        end
+    if tempdir then
+      vim.fn.delete(tempdir, 'rf')
+      local stem = vim.fn.fnamemodify(source, ':r')
+      for _, suffix in ipairs(compiler.artifacts or {}) do
+        vim.fn.delete(stem .. suffix)
       end
     end
-    if tempdir then vim.fn.delete(tempdir, 'rf') end
     if id == run_id then report(buf, phase, result) end
   end
   local function launch(argv, directory, callback)
@@ -102,15 +108,9 @@ local function start(source, ext, buf)
     return
   end
   tempdir = build_dir
-  local_source = tempdir .. '/' .. vim.fs.basename(source)
-  local copied, copy_error = vim.uv.fs_copyfile(source, local_source)
-  if not copied then
-    finish('Preparation', { code = 1, stderr = 'Could not copy source: ' .. tostring(copy_error) })
-    return
-  end
   local binary = tempdir .. '/runfile-output'
-  local argv = vim.list_extend(vim.deepcopy(compilers[ext]), { binary, local_source })
-  launch(argv, tempdir, function(result)
+  local argv = vim.list_extend(vim.deepcopy(compiler.argv), { binary, source })
+  launch(argv, cwd, function(result)
     if result.code ~= 0 then
       finish('Compile', result)
       return
