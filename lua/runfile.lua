@@ -71,8 +71,15 @@ local function start(source, ext, buf)
   run_id = id
   if buf then show(buf, { 'Running ' .. source .. ' ...' }) end
 
-  local tempdir
+  local tempdir, local_source
   local function finish(phase, result)
+    if local_source then
+      for _, stream in ipairs({ 'stdout', 'stderr' }) do
+        if result[stream] then
+          result[stream] = result[stream]:gsub(vim.pesc(local_source), function() return source end)
+        end
+      end
+    end
     if tempdir then vim.fn.delete(tempdir, 'rf') end
     if id == run_id then report(buf, phase, result) end
   end
@@ -95,7 +102,7 @@ local function start(source, ext, buf)
     return
   end
   tempdir = build_dir
-  local local_source = tempdir .. '/' .. vim.fs.basename(source)
+  local_source = tempdir .. '/' .. vim.fs.basename(source)
   local copied, copy_error = vim.uv.fs_copyfile(source, local_source)
   if not copied then
     finish('Preparation', { code = 1, stderr = 'Could not copy source: ' .. tostring(copy_error) })
@@ -119,7 +126,11 @@ end
 
 function M.run_file_buffer()
   local source, ext = current_source()
-  if source then start(source, ext, output_buffer()) end
+  if not source then return end
+  local source_win = vim.api.nvim_get_current_win()
+  local buf = output_buffer()
+  vim.api.nvim_set_current_win(source_win)
+  start(source, ext, buf)
 end
 
 function M.setup()
