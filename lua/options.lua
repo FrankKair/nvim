@@ -33,5 +33,13 @@ local function set_indent_for(level, languages)
   })
 end
 
-set_indent_for(4, { 'c', 'cpp', 'go' })
-set_indent_for(2, { 'lua', 'perl', 'sh' })
+set_indent_for(4, { 'c', 'cpp' })
+set_indent_for(2, { 'lua', 'perl', 'sh', 'typescript', 'ocaml' })
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'go',
+  callback = function()
+    -- display tabs at four columns; keep Go's tab indentation
+    vim.opt_local.tabstop = 4
+  end,
+})

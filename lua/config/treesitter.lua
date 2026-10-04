@@ -5,7 +5,8 @@ require('nvim-treesitter.configs').setup {
   auto_install = false,
   ignore_install = {},
   highlight = { enable = true },
-  indent = { enable = true },
+  -- Tree-sitter indentation is experimental; use Neovim's filetype indent scripts.
+  indent = { enable = false },
   incremental_selection = {
     enable = true,
     keymaps = {
