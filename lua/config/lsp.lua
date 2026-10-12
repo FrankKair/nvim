@@ -49,5 +49,12 @@ require('mason-lspconfig').setup { ensure_installed = { 'lua_ls' } }
 
 vim.lsp.config('*', {
   capabilities = capabilities,
-  on_attach = on_attach
+})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspKeymaps', { clear = true }),
+  callback = function(event)
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    on_attach(client, event.buf)
+  end,
 })
