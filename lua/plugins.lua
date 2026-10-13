@@ -22,10 +22,7 @@ require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   { 'lewis6991/gitsigns.nvim', config = function() require('config.gitsigns') end },
   { 'akinsho/bufferline.nvim', config = function() require('config.bufferline') end },
-  { 'numToStr/Comment.nvim', config = function()
-    require('Comment').setup()
-    require('config.comment')
-  end },
+  { 'nvim-mini/mini.comment', config = function() require('config.comment') end },
   { 'folke/which-key.nvim', config = function()
     require('which-key').setup()
     require('config.which_key')

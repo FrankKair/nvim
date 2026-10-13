@@ -1,20 +1,18 @@
-local opts = { noremap = true, silent = true, desc = 'Toggle comment (CMD+/)' }
+local comment = require('mini.comment')
+comment.setup()
+
+local opts = { expr = true, silent = true, desc = 'Toggle comment (CMD+/)' }
 
 vim.keymap.set(
   'n',
   '<D-/>',
-  function() require('Comment.api').toggle.linewise.current() end,
+  function() return comment.operator() .. '_' end,
   opts
 )
 
 vim.keymap.set(
-  'v',
+  'x',
   '<D-/>',
-  function()
-    -- Escape visual mode to apply comment toggle
-    local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
-    vim.api.nvim_feedkeys(esc, 'nx', false)
-    require('Comment.api').toggle.linewise(vim.fn.visualmode())
-  end,
+  function() return comment.operator() end,
   opts
 )
