@@ -36,6 +36,10 @@ map('n', '<c-h>', '<c-w>h', opts)
 map('n', '<c-j>', '<c-w>j', opts)
 map('n', '<c-k>', '<c-w>k', opts)
 map('n', '<c-l>', '<c-w>l', opts)
+-- Window resizing
+map('n', '<C-M-Left>', '<Cmd>vertical resize -5<CR>', { desc = 'Decrease window width' })
+map('n', '<C-M-Right>', '<Cmd>vertical resize +5<CR>', { desc = 'Increase window width' })
+map('n', '<leader>=', '<C-w>=', { desc = 'Equalize window sizes' })
 -- Word wrap
 map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
